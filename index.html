@@ -381,8 +381,8 @@ const TIPS = [
   ["反射の法則", "光が物体で反射するとき、入射角と反射角は等しくなります。これを光の反射の法則といいます（大阪府のプリント）。"],
   ["屈折の角", "空気からガラスへ進む光は入射角より屈折角が小さく、ガラスから空気へ進む光は屈折角のほうが大きくなります（千葉県のプリント）。"],
   ["光ファイバー", "全反射は光ファイバーなどに利用されています（大阪府のプリント）。"],
-  ["実像", "凸レンズを通った光が実際に集まってスクリーンにうつる像を実像といいます（大阪府・千葉県のプリント）。"],
-  ["虚像", "凸レンズを通して物体を見ると、物体より大きな像が同じ向きに見えます。これを虚像といいます（大阪府のプリント）。"],
+  ["乱反射", "でこぼこした面に当たった光は、四方八方に飛び散るようにはね返ります（キヤノン サイエンスラボ・キッズ）。"],
+  ["全身を映す鏡", "全身を映すには、身長の半分の高さの鏡があればよく、鏡との距離は関係ありません（高知県の単元構想表）。"],
   ["鏡の像", "鏡に映る像は、鏡に対して線対称な場所に見えます（高知県の単元構想表）。"],
   ["光の道すじ", "線香の煙や石けん水に光を通すと、光の道すじが見えます（群馬県の指導案）。"],
 ];
@@ -676,7 +676,7 @@ function askWhy() {
   $("msg").className = "msg"; $("msg").textContent = `✓ 正解！ では、光はどうなった？${cur.jd && cur.jd.text ? "　" + cur.jd.text : ""}`;
   if ($("ask")) $("ask").textContent = "光はどうなった？";
   document.querySelectorAll("#card [data-a11y-say]").forEach((e) => e.removeAttribute("data-a11y-say")); // 読み上げは2段目の問いと選び肢だけ（funka-level #1 の CodeRabbit）
-  $("why").innerHTML = `<p class="note" data-a11y-say>光はどうなった？</p><div class="why" role="group" aria-label="あし">${GK.map((x) => `<button data-g="${x}" data-a11y-say><b>${G.GROUPS[x].name}</b><small>${G.GROUPS[x].sub}</small></button>`).join("")}</div>`;
+  $("why").innerHTML = `<p class="note" data-a11y-say>光はどうなった？</p><div class="why" role="group" aria-label="光はどうなった">${GK.map((x) => `<button data-g="${x}" data-a11y-say><b>${G.GROUPS[x].name}</b><small>${G.GROUPS[x].sub}</small></button>`).join("")}</div>`;
   document.querySelectorAll(".why button").forEach((b) => (b.onclick = () => chooseWhy(b.dataset.g)));
   paintWhy();
 }
@@ -725,7 +725,7 @@ function solved() {
   $("hintbox").innerHTML = ""; $("msg").className = "msg"; $("msg").textContent = "";
   $("after").innerHTML = `<div class="verdict" role="status">
     <div class="hd">✓ 正解！ ${starStr(st)}</div>
-    ${P.grp ? `<p class="note" style="text-align:left">あし：<b>${esc(G.GROUPS[P.grp].name)}</b>（${esc(G.GROUPS[P.grp].sub)}・${esc(G.CATS[P.cat])}）</p>` : ""}
+    ${P.grp ? `<p class="note" style="text-align:left">どうなった：<b>${esc(G.GROUPS[P.grp].name)}</b>（${esc(G.GROUPS[P.grp].sub)}・${esc(G.CATS[P.cat])}）</p>` : ""}
     ${cur.jd && cur.jd.sure ? `<p class="sure-res">${cur.jd.ok ? "🎯 自信ありで当てた" : "🎯 自信ありでまちがえた。ここを覚えよう"}</p>` : ""}
     <p class="why" data-a11y-say><b>${esc(P.name)}：</b>${esc(P.why)}</p>
     ${srcHtml(P)}

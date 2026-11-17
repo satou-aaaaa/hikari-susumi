@@ -27,7 +27,7 @@ const CL = { "直進": ["sugu", "onaji"], "反射": ["hane", "nameraka"], "乱�
 // 種類 → [答え, 問いに必ずある言葉（手がかりが入れかわっていない印）]
 const TB = {
   c_kemuri: ["直進", "線香の煙|光源装置"], h_kagami: ["反射", "鏡に"], r_refu: ["乱反射", "でこぼこ|しわ"], k_straw: ["屈折", "ストロー|鉛筆"], z_fiber: ["全反射", "光ファイバー"],
-  c_suichoku: ["直進", "垂直"], h_sayu: ["反射", "左右が逆|万華鏡"], r_suimen: ["乱反射", "波立った水面"], k_coin: ["屈折", "コイン"], z_mizu: ["全反射", "水の中から水面"],
+  c_suichoku: ["直進", "石けん水"], h_sayu: ["反射", "左右が逆|万華鏡"], r_suimen: ["乱反射", "波立った水面"], k_coin: ["屈折", "コイン"], z_mizu: ["全反射", "水の中から水面"],
   c_nichiko: ["直進", "日光"], h_zenshin: ["反射", "全身"], r_shashin: ["乱反射", "写真"], k_garasu: ["屈折", "空気からガラス"], z_garasu: ["全反射", "ガラスの中から空気"],
 };
 {
@@ -66,7 +66,8 @@ const TB = {
   check("説明は110字以内・ヒントは60字以内（答えの決め手は110字）・問いは70字以内（やさしい日本語。一文を短く）", !longWhy.length && !longLook.length && !longOpt.length, longWhy.concat(longLook, longOpt.slice(0, 3)).join(","));
   const okSrc = Object.values(G.SRC).every(([n, u]) => /^https:\/\/(www\.pref\.osaka\.lg\.jp\/documents\/25642\/|www\.pref\.chiba\.lg\.jp\/kyouiku\/shidou\/gakuryoku\/yaruki\/|www\.center\.ibk\.ed\.jp\/|www\.pref\.kochi\.lg\.jp\/|gunma-boe\.gsn\.ed\.jp\/|global\.canon\/ja\/technology\/kids\/)/.test(u) && n);
   check("出典は大阪府・千葉県・高知県・群馬県の教育委員会、茨城県教育研修センター、キヤノン サイエンスラボ・キッズだけ", okSrc);
-  check("凸レンズの像と光の色を答えにも選び肢にも出さない", !G.KINDS.some((k) => { for (let i = 0; i < 100; i++) { const P = G.make(`${k.id}|nz${i}`); if ([P.ans, ...P.opts].some((o) => /実像|虚像|分光/.test(o))) return true; } return false; }));
+  check("凸レンズの像と光の色を答えにも選び肢にも、今日のまめ知識（TIPS）にも出さない（CodeRabbit hikari-susumi#1）", !/実像|虚像|分光|凸レンズ/.test((readFileSync(path.join(root, "index.html"), "utf8").match(/const TIPS = \[[\s\S]*?\n\];/) || ["x"])[0]) && !G.KINDS.some((k) => { for (let i = 0; i < 100; i++) { const P = G.make(`${k.id}|nz${i}`); if ([P.ans, ...P.opts].some((o) => /実像|虚像|分光/.test(o))) return true; } return false; }));
+  check("場面に書いてある進み方は選び肢に出さない（鏡ではね返したあとの日光で「反射」。CodeRabbit hikari-susumi#1）", Array.from({ length: 300 }, (_, i) => G.make(`c_nichiko|ex${i}`)).every((P) => !P.opts.includes("反射")));
 }
 {
   // 今日の5問・上級の組み方（3年分）
